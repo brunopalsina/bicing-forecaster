@@ -1,35 +1,34 @@
 # Progress
 
 ## Current state
-- Project root: `bicing/`; git repo with `main` pushed to GitHub, branch `feature/feed-notes` checked out.
-- Python 3.14.4 venv at `../venv` (activated for tooling).
-- `origin/main` is at `25397a5`; `feature/feed-notes` points there too, with no unique commits yet.
-- Phase 1 in progress.
+- Project root: `bicing/`; git repo with `main` on GitHub, `origin/main` at `25397a5`.
+- `origin/feature/feed-notes` at `aed7190` ("Add feed exploration notes"); PR into `main` opened, merge pending.
+- Python 3.14.4 venv at `../venv`.
+- Phase 1 (Git and data collection) in progress.
+- Feed exploration completed: CityBikes v2 `bicing` endpoint selected as first source (no key, 545 stations); GBFS and official Open Data BCN retained as later alternatives.
 
 ## Done
-- [x] Scaffold folders and empty `src/` placeholders
-- [x] Write local-only AGENTS.md, plus PROGRESS.md, docs/decisions.md, LEARNING_LOG.md, README skeleton, ignores, Phase 1 requirements
-- [x] `git init -b main`; first commit `a0d69d6`
-- [x] Untrack AGENTS.md (`git rm --cached`) and commit `25397a5`; it stays local and is gitignored
-- [x] Generate SSH key, add it to GitHub, push `main` to `origin`
+- [x] Scaffold directories and empty `src/` placeholders
+- [x] Local-only `AGENTS.md`; tracked docs, ignores, Phase 1 requirements
+- [x] `git init -b main`; commits `a0d69d6`, `25397a5`
+- [x] SSH auth configured; `main` pushed to GitHub
+- [x] First feature branch created and pushed; PR opened
+- [x] Bicing feed inspected; fields, station keys and cadence options identified
 
-## In progress
-- Phase 1: Git and data collection
-  - Step 5: first PR from `feature/feed-notes` into `main`
-    - Branch created off `25397a5`; not pushed yet
-    - This PROGRESS.md update is the intended first branch change (currently uncommitted)
-  - After the PR: explore the Bicing feed and write the first collector (by you, with review)
-
-## Next
-- Stage + commit this PROGRESS.md edit, push `feature/feed-notes`, open PR, merge, clean up local branch
-- Explore Bicing API/feed; write the first collector (you) with my review
-- Collect 3-4 weeks of data via GitHub Actions cron into free Postgres
-- Baselines vs LightGBM with time-based validation, tracked in MLflow
-- FastAPI in Docker, deployed once to AWS ECR + App Runner
+## To do
+- Confirm/merge the open PR, delete `feature/feed-notes`, pull `main`
+- Choose polling cadence (10 or 15 min) and record the decision
+- Add CityBikes v2 feed/cadence decision entry to `docs/decisions.md`
+- Implement `src/collect.py`: fetch JSON, validate key relationships, parse timestamps, write observations via SQLAlchemy using `DATABASE_URL` from the environment
+- Configure free Postgres instance; store connection details only as GitHub Secrets or local env vars
+- Add scheduled GitHub Actions workflow and verify first rows in Postgres
+- Continue 3-4 weeks of collection before modeling
+- Later: baselines + LightGBM with time-based validation in MLflow, FastAPI/Docker, AWS ECR + App Runner
 
 ## Open problems
-- AGENTS.md is gone from the current tree and future commits, but still exists in remote history via `a0d69d6` (pushed with main). Purging it fully needs a history rewrite + force push; decide before collaborators arrive.
-- Bicing feed/API details not explored yet.
-- Free Postgres provider not chosen yet.
-- `ruff` is not in Phase 1 requirements; add it when CI is set up.
-- Parent folder `chown` issue resolved.
+- `AGENTS.md` remains in remote history via `a0d69d6`; full removal requires history rewrite + force push
+- Free Postgres provider not selected
+- `ruff` not in Phase 1 requirements; add with CI
+- Feed timestamp parsing needs validation (`+00:00Z` suffix)
+- `extra.uid` is not unique; use top-level `id` as station key
+- Parent folder ownership issue resolved
