@@ -29,6 +29,9 @@ data/
 mlruns/
 models/*.pkl
 
+# Local agent notes (not published)
+AGENTS.md
+
 # Editors / OS
 .idea/
 .vscode/
