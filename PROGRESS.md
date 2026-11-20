@@ -9,13 +9,14 @@
 
 ## Done
 - [x] Scaffold directories and empty `src/` placeholders
-- [x] Local-only `AGENTS.md`; tracked docs, ignores, Phase 1 requirements
+- [x] Local-only `AGENTS.md` and `LEARNING_LOG.md`; tracked docs, ignores, Phase 1 requirements
 - [x] `git init -b main`; commits `a0d69d6`, `25397a5`
 - [x] SSH auth configured; `main` pushed to GitHub
 - [x] First feature branch created and pushed; PR opened
 - [x] Bicing feed inspected; fields, station keys and cadence options identified
 
 ## To do
+- Untrack `LEARNING_LOG.md` (`git rm --cached`) and commit `.gitignore` + deletion
 - Confirm/merge the open PR, delete `feature/feed-notes`, pull `main`
 - Choose polling cadence (10 or 15 min) and record the decision
 - Add CityBikes v2 feed/cadence decision entry to `docs/decisions.md`
@@ -26,7 +27,7 @@
 - Later: baselines + LightGBM with time-based validation in MLflow, FastAPI/Docker, AWS ECR + App Runner
 
 ## Open problems
-- `AGENTS.md` remains in remote history via `a0d69d6`; full removal requires history rewrite + force push
+- `AGENTS.md` and `LEARNING_LOG.md` remain in remote history via `a0d69d6`; full removal requires history rewrite + force push
 - Free Postgres provider not selected
 - `ruff` not in Phase 1 requirements; add with CI
 - Feed timestamp parsing needs validation (`+00:00Z` suffix)
