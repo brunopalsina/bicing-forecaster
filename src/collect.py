@@ -111,9 +111,11 @@ def write_observations(engine, rows):
         logger.info("Insert executed for %s rows", len(rows))
 
 
-def main():
-    load_dotenv()
-    database_url = os.environ["DATABASE_URL"]
+def collect_once(database_url=None):
+    if database_url is None:
+        load_dotenv()
+        database_url = os.environ["DATABASE_URL"]
+
     engine = create_engine(database_url)
     metadata.create_all(engine)
 
@@ -121,6 +123,11 @@ def main():
     payload = fetch_payload()
     rows = parse_observations(payload, observed_at)
     write_observations(engine, rows)
+    return rows
+
+
+def main():
+    rows = collect_once()
     logger.info("Collected %s station observations", len(rows))
 
 
