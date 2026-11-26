@@ -37,3 +37,9 @@ Format: `### Title` then one line each for **Context**, **Decision**, **Why**, *
 - Decision: run the collector as an AWS Lambda invoked by EventBridge Scheduler `rate(10 minutes)` in the project region `eu-north-1`; keep GitHub Actions `workflow_dispatch` only.
 - Why: reliable timing and retries, Python code reused unchanged, and it builds the AWS skills already in the plan.
 - Consequences: `DATABASE_URL` now lives in a Lambda environment variable; the deployment zip excludes `pandas`; new-experience accounts are locked to their assigned region, so Supabase Frankfurt is accessed cross-region.
+
+### Open-Meteo weather backfill (no live weather collector)
+- Context: weather likely affects Bicing demand; need historical weather aligned with collected station observations.
+- Decision: use Open-Meteo (no API key) for Barcelona (`41.3874,2.1686`): hourly `temperature_2m`, `rain`, `wind_speed_10m`. Test with forecast API `past_days=5`; after Bicing collection stops, do a one-time archive backfill for the collected period.
+- Why: free, simple HTTP API; historical archive covers training window; 1-2 months hourly for one location is tiny (~1.4k rows), so no scheduler needed.
+- Consequences: archive has a few-day lag, so recent checks use forecast API; align timezone/hour granularity with Bicing `observed_at`; store raw weather vars and do feature engineering later in `features.py`.
